@@ -1,0 +1,112 @@
+# Copyright 2022 Bucur Vladimir 311CA<vladimirbucur1@gmail.com>
+
+Nume: Bucur Vladimir
+Grupa: 311CA
+
+Titlu: The Library of HashBabel - Tema 2
+
+Impartirea programului in fisiere:
+	-exista 6 fisiere .c cu cod sursa impartite astfel: 
+			-main.c contine functia int main
+			-list.c contine structurile si functiile care realizeaza
+		lucrul cu listele(functii foarte asemanatoare cu cele din
+		scheletul de laborator)
+			-hashtable.c contine structurile si functiile care
+		realizeaza lucrul cu hashtable-ul(functii foarte asemanatoare cu
+		cele din scheletul de laborator)
+			-book.c contine structurile si functiile care realizeaza
+		comenzilelegate de carti: ADD_BOOK, GET_BOOK, RMV_BOOK, ADD_DEF,
+		GET_DEF, RMV_DEF
+			-user.c contine structurile si functiile care realizeaza
+		comenzilelegate de useri: ADD_USER, BORROW, RETURN, LOST
+			-tops.c contine functiile  care realizeaza creerea si
+		afisarea topurilor cartilor si a userilor
+	-pentru fiecare .c,  exita si un header .h unde se gasesc antetele funtiilor
+	-in die.h se afla codul pentru verificarile de la alocarea de memorie
+
+Idee generala
+	-pentru aceasta problema m-am folosit de 2 hashtable-uri:
+			-primul in care sa retin cartile din biblioteca, iar fiecare
+		carte la randul ei era un alt hashtable care continea o definitie
+		de tip info (o cheie si o valoare)
+			-al 2-lea in care am retinut userii
+	-astfel am utilizat mai multe strucrui:
+			-mai multe structuri pentru operatiile cu liste si
+		cele cu hashtable-uri
+			-book_t -> structura care retine numele cartii, hashtable-ul
+		pentru definitii, ratingul cartii, numarul de imprumuri, daca este
+		sau nu imprumutata intr-un moment anume si suma tuturor review-urilor
+		primite
+			-user_t -> structura care retine numele usern ului si a cartii
+		pe care a imprumutat-o, scorul, daca este banat sau nu si numarul de
+		zile pe care le are la dispozitie sa returneze cartea imprumutat-o
+	-toate operatiile de mai jos sunt introduse intr-un while pentru a putea
+fi folosite mai usors
+
+ADD_BOOK
+	-am creea un hashtable nou in care am adaugat cartile al caror nume este
+preluat de la tastatura si in fiecare carte am adaugat definitiile corespunzatoare
+si am facut resize daca a fost nevoie
+	-inainte de a introduce cartea in biblioteca am facut initializarile
+necesare parametrilor sai
+	-in cazul in care mai era o definitie cu aceeasi cheie cu cea a definietiei
+pe care doream sa o introduc, o stergeam si adaugam noua definitie
+	-acelasi lucru l-am facut si cu cartile: daca mai exista o carte in
+biblioteca cu acelasi nume, o stergeam si o inlocuiam cu cea noua
+
+GET_BOOK
+	-in cazul in care cartea exista, m-am folosit de functia ht_get pentru
+a afla cartea cu numele preluat de la tastatura si am afisat detaliile cerute
+despre ea
+
+RMV_BOOK
+	-in cazul in care cartea exista, am aflat care este cartea cu numele
+prelua de la tastatura si cu ajutorul functiei ht_remove_entry am sters-o
+
+ADD_DEF
+	-am creea o definitie noua in care am adaugat cheia si valoarea citite de la tastatura
+	-dupa ce am verificat daca cartea mentionata este in biblioteca, am adaugat noua
+definitie si am facut resize daca a fost nevoie
+	-in cazul in care mai era o definitie cu aceeasi cheie cu cea a definietiei
+pe care doream sa o introduc, o stergeam si adaugam noua definitie
+
+GET_DEF
+	-in cazul in care cartea exista, m-am folosit de functia get_book pentru
+a afla cartea cu numele preluat de la tastatura si de functia ht_get pentru a afla
+valoarea de la cheia data, ar apoi am afisat-o
+
+RMV_DEF
+	-in cazul in care cartea exista, am aflat care este cartea cu numele
+prelua de la tastatura
+	-cu ajutorul functiei ht_remove_entry am sters-o definitia pe care am
+aflat-o cu get_book
+
+
+ADD_USER
+	-am creea un user nou si am initializat parametrii sai, apoi l-am
+adaugat in hashtable-ul de useri
+
+BORROW
+	-dupa ce am verificat ca userul si cartea sa existe si sa nu fie banati,
+respectiv stearsa/imprumutata de altcineva, am facut modificarile necesare atat
+in parametrii cartii cat si in cei ai userului
+
+RETURN
+	-am verificat ca userul si cartea sa existe si sa nu fie banati,
+respectiv stearsa/imprumutata de altcineva
+	-apoi am facut modificarile necesare in parametrii cartii si ai userului
+	-am calculat ratingul si scorul, iar daca acesta a ajuns negativ a fost banat
+
+LOST
+	-am verificat ca userul si cartea sa existe si sa nu fie banati,
+respectiv stearsa/imprumutata de altcineva
+	-apoi am facut modificarile necesare in parametrii userului, iar in cazul
+in care acesta a juns la un scor negativ a fost banat
+	-am sters cartea din biblioteca
+
+EXIT
+	-am calculat topul cartilor si al userilor realizand cate un vector de
+useri/carti pe care ulterior l-am sortat dupa cerintele date
+	-am afisat topurile sub forma ceruta
+	-ajutandu-ma de functiile de free, am eliberat toata memoria folosita
+(atat cea pentru hastable-ul bibliotecii, cat si pentru cel al userilor)
